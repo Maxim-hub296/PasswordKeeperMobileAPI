@@ -9,3 +9,7 @@ class Password(models.Model):
     password_text = models.CharField(max_length=500)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='passwords')
+
+
+    def __str__(self):
+        return f'Пароль пользователя {self.user} к сайту {self.site_name}'

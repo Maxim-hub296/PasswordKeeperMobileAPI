@@ -4,8 +4,11 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework import viewsets
+from rest_framework import generics
 
-from passwordKeeperAPI.serializers import RegistrationSerializer
+from passwordKeeperAPI.models import Password
+from passwordKeeperAPI.serializers import RegistrationSerializer, PasswordSerializer, PasswordsSerializer
 
 
 # Create your views here.
@@ -48,6 +51,17 @@ class AuthStatuAPIView(APIView):
     def get(self, request):
         is_authenticated = request.user.is_authenticated
         username = request.user.username
-        print(is_authenticated)
-        print(username)
         return Response({'is_authenticated': is_authenticated, 'username': username})
+
+
+class UsersPasswordsAPIView(generics.ListAPIView):
+    serializer_class = PasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.request.user.passwords.all()
+
+class PasswordsViewSet(viewsets.ModelViewSet):
+    queryset = Password.objects.all()
+    serializer_class = PasswordsSerializer
+

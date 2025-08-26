@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from django.db import IntegrityError
 
+from passwordKeeperAPI.models import Password
+
 User = get_user_model()
 
 
@@ -23,3 +25,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({
                 "username": "Пользователь с таким именем уже существует."
             })
+
+
+class PasswordsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Password
+        fields = '__all__'
+
+
+class PasswordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Password
+        fields = ['site_name', 'login', 'password_text']
