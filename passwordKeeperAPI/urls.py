@@ -13,5 +13,6 @@ urlpatterns = [
     path('login/', LoginAPIView.as_view(), name='login'),
     path('logout/', LogoutAPIVIew.as_view(), name='logout'),
     path('auth-status/', AuthStatuAPIView.as_view(), name='auth-status'),
-    path('get-passowords/', UsersPasswordsAPIView.as_view(), name='get-passwords')
+    path('get-passowords/', UsersPasswordsAPIView.as_view(), name='get-passwords'),
+    path('save-password/', SavePasswordAPIView.as_view(), name='save-password'),
 ]

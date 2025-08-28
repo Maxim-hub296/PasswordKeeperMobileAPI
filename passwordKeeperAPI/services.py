@@ -1,7 +1,9 @@
-# Класс шифровки/дешифровки пароля
+from random import choices, shuffle
+
 from cryptography.fernet import Fernet
 import base64
 import hashlib
+import string
 
 
 class Crypto:
@@ -48,3 +50,6 @@ class Crypto:
     def utf8_to_bytes(utf8_string):
         """Без понятия, что это"""
         return utf8_string.encode('utf-8')
+
+
+

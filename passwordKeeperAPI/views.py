@@ -6,9 +6,10 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import generics
-
+from .models import Password
 from passwordKeeperAPI.models import Password
 from passwordKeeperAPI.serializers import RegistrationSerializer, PasswordSerializer, PasswordsSerializer
+from .services import Crypto
 
 
 # Create your views here.
@@ -61,7 +62,24 @@ class UsersPasswordsAPIView(generics.ListAPIView):
     def get_queryset(self):
         return self.request.user.passwords.all()
 
+
 class PasswordsViewSet(viewsets.ModelViewSet):
     queryset = Password.objects.all()
     serializer_class = PasswordsSerializer
 
+
+class SavePasswordAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        site_name = request.data.get('site_name')
+        login = request.data.get('login')
+        password = request.data.get('password')
+        hash_password = Crypto.encrypt(password, request.user.password)
+        Password.objects.create(
+            site_name=site_name,
+            login=login,
+            password_text=hash_password,
+            user=request.user
+        )
+        return Response(status=status.HTTP_201_CREATED)
