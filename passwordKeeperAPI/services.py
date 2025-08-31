@@ -1,4 +1,3 @@
-from random import choices, shuffle
 
 from cryptography.fernet import Fernet
 import base64

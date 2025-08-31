@@ -9,7 +9,7 @@ from rest_framework import generics
 from .models import Password
 from passwordKeeperAPI.models import Password
 from passwordKeeperAPI.serializers import RegistrationSerializer, PasswordSerializer, PasswordsSerializer
-from .services import Crypto
+from passwordKeeperAPI.services import Crypto
 
 
 # Create your views here.
@@ -83,3 +83,11 @@ class SavePasswordAPIView(APIView):
             user=request.user
         )
         return Response(status=status.HTTP_201_CREATED)
+
+class DeletePasswordAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        id = request.data.get('id')
+        user = request.user
+        Password.objects.filter(pk=id).delete()
